@@ -148,12 +148,13 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        titleLabel = self.textLabel
-        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
-        titleLabel?.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .horizontal)
+        let titleLabel = UILabel()
+        self.titleLabel = titleLabel
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .horizontal)
 
-        contentView.addSubview(titleLabel!)
+        contentView.addSubview(titleLabel)
         contentView.addSubview(textField)
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil) { [weak self] _ in
@@ -170,7 +171,6 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
-            self?.titleLabel = self?.textLabel
             self?.setNeedsUpdateConstraints()
         }
     }
@@ -213,7 +213,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     open override func update() {
         super.update()
         detailTextLabel?.text = nil
-
+        textLabel?.text = nil
+        
+        update(textLabel: titleLabel, detailTextLabel: nil)
+        
         if !awakeFromNibCalled {
             if let title = row.title {
                 textField.textAlignment = title.isEmpty ? .left : .right
@@ -236,7 +239,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             }
         }
         if row.isHighlighted {
-            textLabel?.textColor = tintColor
+            titleLabel?.textColor = tintColor
         }
     }
 

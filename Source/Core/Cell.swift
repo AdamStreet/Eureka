@@ -107,7 +107,16 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-
+    
+    /**
+     Update specific labels with title & value
+     */
+    open func update(textLabel : UILabel?, detailTextLabel : UILabel?) {
+        textLabel?.text = row.title
+        textLabel?.textColor = row.isDisabled ? .gray : .black
+        detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+    }
+    
     /**
      Function responsible for setting up the cell at creation time.
      */
@@ -118,11 +127,13 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     /**
      Function responsible for updating the cell each time it is reloaded.
      */
+    /**
+     Function responsible for updating the cell each time it is reloaded.
+     */
     open override func update() {
         super.update()
-        textLabel?.text = row.title
-        textLabel?.textColor = row.isDisabled ? .gray : .black
-        detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+        
+        update(textLabel: textLabel, detailTextLabel: detailTextLabel)
     }
 
     /**
