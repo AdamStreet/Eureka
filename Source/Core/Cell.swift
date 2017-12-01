@@ -92,6 +92,9 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     /// The row associated to this cell
     public weak var row: RowOf<T>!
 
+    @IBOutlet public weak var titleLabel : UILabel?
+    @IBOutlet public weak var selectedItemLabel : UILabel?
+    
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
         if let v = formViewController()?.inputAccessoryView(for: row) {
@@ -106,6 +109,14 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        let titleLabel = UILabel()
+        self.titleLabel = titleLabel
+        contentView.addSubview(titleLabel)
+        
+        let selectedItemLabel = UILabel()
+        self.selectedItemLabel = selectedItemLabel
+        contentView.addSubview(selectedItemLabel)
     }
     
     /**
@@ -122,6 +133,53 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
      */
     open override func setup() {
         super.setup()
+        
+        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
+        selectedItemLabel?.translatesAutoresizingMaskIntoConstraints = false
+        
+        let horizontalGap : CGFloat = 10.0
+        let verticalGap : CGFloat = 6.0
+        
+        if let titleLabel = titleLabel {
+            contentView.addConstraint(NSLayoutConstraint(item: titleLabel,
+                                                         attribute: .leading,
+                                                         relatedBy: .equal,
+                                                         toItem: contentView,
+                                                         attribute: .leading,
+                                                         multiplier: 1.0,
+                                                         constant: horizontalGap))
+            
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(gap)-[titleLabel]-(gap)-|",
+                                                                      options: .alignAllCenterY,
+                                                                      metrics: ["gap" : verticalGap],
+                                                                      views: ["titleLabel" : titleLabel]))
+        }
+        
+        if let selectedItemLabel = selectedItemLabel {
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(gap)-[selectedItemLabel]-(gap)-|",
+                                                                      options: .alignAllCenterY,
+                                                                      metrics: ["gap" : verticalGap],
+                                                                      views: ["selectedItemLabel" : selectedItemLabel]))
+            
+            contentView.addConstraint(NSLayoutConstraint(item: selectedItemLabel,
+                                                         attribute: .trailing,
+                                                         relatedBy: .equal,
+                                                         toItem: contentView,
+                                                         attribute: .trailing,
+                                                         multiplier: 1.0,
+                                                         constant: -horizontalGap))
+        }
+        
+        if let titleLabel = titleLabel, let selectedItemLabel = selectedItemLabel {
+            contentView.addConstraint(NSLayoutConstraint(item: titleLabel,
+                                                         attribute: .trailing,
+                                                         relatedBy: .lessThanOrEqual,
+                                                         toItem: selectedItemLabel,
+                                                         attribute: .leading,
+                                                         multiplier: 1.0,
+                                                         constant: horizontalGap))
+        }
+        
     }
 
     /**
@@ -133,7 +191,10 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     open override func update() {
         super.update()
         
-        update(textLabel: textLabel, detailTextLabel: detailTextLabel)
+        textLabel?.text = nil
+        detailTextLabel?.text = nil
+        
+        update(textLabel: titleLabel, detailTextLabel: selectedItemLabel)
     }
 
     /**
