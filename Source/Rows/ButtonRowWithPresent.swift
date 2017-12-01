@@ -38,15 +38,15 @@ open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCell
     open override func customUpdateCell() {
         super.customUpdateCell()
         let leftAligmnment = presentationMode != nil
-        cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
+        cell.titleLabel?.textAlignment = leftAligmnment ? .left : .center
         cell.accessoryType = !leftAligmnment || isDisabled ? .none : .disclosureIndicator
         cell.editingAccessoryType = cell.accessoryType
         if !leftAligmnment {
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             cell.tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            cell.textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha:isDisabled ? 0.3 : 1.0)
+            cell.titleLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha:isDisabled ? 0.3 : 1.0)
         } else {
-            cell.textLabel?.textColor = nil
+            cell.titleLabel?.textColor = nil
         }
     }
 

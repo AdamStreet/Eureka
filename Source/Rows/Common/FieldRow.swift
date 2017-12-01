@@ -131,7 +131,6 @@ extension TextFieldCell {
 open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
 
     @IBOutlet public weak var textField: UITextField!
-    @IBOutlet public weak var titleLabel: UILabel?
 
     fileprivate var observingTitleText = false
     private var awakeFromNibCalled = false
@@ -141,20 +140,14 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 	private var calculatedTitlePercentage: CGFloat = 0.7
 	
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        subtitleLabel?.removeFromSuperview()
+        subtitleLabel = nil
+        
         let textField = UITextField()
         self.textField = textField
         textField.translatesAutoresizingMaskIntoConstraints = false
-
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        let titleLabel = UILabel()
-        self.titleLabel = titleLabel
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
-        titleLabel.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .horizontal)
-
-        contentView.addSubview(titleLabel)
         contentView.addSubview(textField)
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil) { [weak self] _ in
@@ -212,8 +205,6 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 
     open override func update() {
         super.update()
-        detailTextLabel?.text = nil
-        textLabel?.text = nil
         
         update(textLabel: titleLabel, detailTextLabel: nil)
         

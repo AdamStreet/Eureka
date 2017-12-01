@@ -41,9 +41,9 @@ open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         selectionStyle = row.isDisabled ? .none : .default
         accessoryType = .none
         editingAccessoryType = accessoryType
-        textLabel?.textAlignment = .center
-        textLabel?.textColor = tintColor
-        textLabel?.textColor  = tintColor.withAlphaComponent(row.isDisabled ? 0.3 : 1.0)
+        titleLabel?.textAlignment = .center
+        titleLabel?.textColor = tintColor
+        titleLabel?.textColor  = tintColor.withAlphaComponent(row.isDisabled ? 0.3 : 1.0)
     }
 
     open override func didSelect() {
@@ -81,10 +81,10 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
     open override func customUpdateCell() {
         super.customUpdateCell()
         let leftAligmnment = presentationMode != nil
-        cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
+        cell.titleLabel?.textAlignment = leftAligmnment ? .left : .center
         cell.accessoryType = !leftAligmnment || isDisabled ? .none : .disclosureIndicator
         cell.editingAccessoryType = cell.accessoryType
-        cell.textLabel?.textColor = !leftAligmnment ? cell.tintColor.withAlphaComponent(isDisabled ? 0.3 : 1.0) : nil
+        cell.titleLabel?.textColor = !leftAligmnment ? cell.tintColor.withAlphaComponent(isDisabled ? 0.3 : 1.0) : nil
     }
 
     open override func prepare(for segue: UIStoryboardSegue) {

@@ -439,7 +439,7 @@ open class MultivaluedSection: Section {
             $0.title = "Add"
             $0.cellStyle = .value1
         }.cellUpdate { cell, _ in
-            cell.textLabel?.textAlignment = .left
+            cell.titleLabel?.textAlignment = .left
         }
     }
 

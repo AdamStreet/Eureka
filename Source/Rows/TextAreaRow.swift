@@ -115,8 +115,8 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
 
     open override func update() {
         super.update()
-        textLabel?.text = nil
-        detailTextLabel?.text = nil
+        titleLabel?.text = nil
+        subtitleLabel?.text = nil
         textView.isEditable = !row.isDisabled
         textView.textColor = row.isDisabled ? .gray : .black
         textView.text = row.displayValueFor?(row.value)

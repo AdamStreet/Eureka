@@ -62,15 +62,15 @@ open class PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPic
         selectionStyle = row.isDisabled ? .none : .default
 
         if row.title?.isEmpty == false {
-            detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+            subtitleLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
         } else {
-            textLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
-            detailTextLabel?.text = nil
+            titleLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+            subtitleLabel?.text = nil
         }
 
-        textLabel?.textColor = row.isDisabled ? .gray : .black
+        titleLabel?.textColor = row.isDisabled ? .gray : .black
         if row.isHighlighted {
-            textLabel?.textColor = tintColor
+            titleLabel?.textColor = tintColor
         }
 
         picker.reloadAllComponents()

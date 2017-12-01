@@ -32,18 +32,18 @@ class RowCallbackTests: BaseEurekaTests {
         formVC.form = Form()
             +++ Section("something")
             <<< CheckRow("row1").cellSetup { cell, _ in
-                cell.textLabel?.text = "checkrow + Setup"
+                cell.titleLabel?.text = "checkrow + Setup"
                 cell.backgroundColor = .red
             }
             <<< IntRow("row2").cellUpdate({ cell, _ in
-                cell.textLabel?.text = "introw"
-                cell.textLabel?.font = UIFont(name: "Baskerville-Italic", size: 20)
+                cell.titleLabel?.text = "introw"
+                cell.titleLabel?.font = UIFont(name: "Baskerville-Italic", size: 20)
             })
             <<< TextRow("row3").cellSetup({ cell, _ in
-                cell.textLabel?.text = "aftersetup"
+                cell.titleLabel?.text = "aftersetup"
             }).cellUpdate({ cell, _ in
-                cell.textLabel?.text = "afterupdate"
-                cell.textLabel?.font = UIFont(name: "Baskerville-Italic", size: 20)
+                cell.titleLabel?.text = "afterupdate"
+                cell.titleLabel?.font = UIFont(name: "Baskerville-Italic", size: 20)
             })
     }
 
@@ -84,10 +84,10 @@ class RowCallbackTests: BaseEurekaTests {
 
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
 
-        XCTAssertEqual(chkRow.cell.textLabel?.text, "checkrow + Setup")
-        XCTAssertEqual(textRow.cell.textLabel?.text, "aftersetup")
+        XCTAssertEqual(chkRow.cell.titleLabel?.text, "checkrow + Setup")
+        XCTAssertEqual(textRow.cell.titleLabel?.text, "aftersetup")
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
-        XCTAssertEqual(textRow.cell.textLabel?.text, "afterupdate")
+        XCTAssertEqual(textRow.cell.titleLabel?.text, "afterupdate")
 
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
 
@@ -96,13 +96,13 @@ class RowCallbackTests: BaseEurekaTests {
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
 
-        XCTAssertEqual(chkRow?.cell.textLabel?.text, chkRow?.title)
-        XCTAssertEqual(intRow?.cell.textLabel?.text, "introw")
-        XCTAssertEqual(textRow?.cell.textLabel?.text, "afterupdate")
+        XCTAssertEqual(chkRow?.cell.titleLabel?.text, chkRow?.title)
+        XCTAssertEqual(intRow?.cell.titleLabel?.text, "introw")
+        XCTAssertEqual(textRow?.cell.titleLabel?.text, "afterupdate")
 
         XCTAssertEqual(chkRow?.cell.backgroundColor, .red)
-        XCTAssertEqual(intRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
-        XCTAssertEqual(textRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
+        XCTAssertEqual(intRow?.cell.titleLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
+        XCTAssertEqual(textRow?.cell.titleLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
 
     }
 }

@@ -29,7 +29,6 @@ open class SliderCell: Cell<Float>, CellType {
 
     private var awakeFromNibCalled = false
 
-    @IBOutlet open weak var titleLabel: UILabel!
     @IBOutlet open weak var valueLabel: UILabel!
     @IBOutlet open weak var slider: UISlider!
 
@@ -41,8 +40,7 @@ open class SliderCell: Cell<Float>, CellType {
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
             if me.shouldShowTitle {
-                me.titleLabel = me.textLabel
-                me.valueLabel = me.detailTextLabel
+                me.valueLabel = me.subtitleLabel
                 me.addConstraints()
             }
         }
@@ -62,12 +60,10 @@ open class SliderCell: Cell<Float>, CellType {
         super.setup()
         if !awakeFromNibCalled {
             // title
-            let title = textLabel
-            textLabel?.translatesAutoresizingMaskIntoConstraints = false
-            textLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
-            self.titleLabel = title
+            titleLabel?.translatesAutoresizingMaskIntoConstraints = false
+            titleLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
 
-            let value = detailTextLabel
+            let value = subtitleLabel
             value?.translatesAutoresizingMaskIntoConstraints = false
             value?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
             self.valueLabel = value
@@ -78,7 +74,7 @@ open class SliderCell: Cell<Float>, CellType {
             self.slider = slider
 
             if shouldShowTitle {
-                contentView.addSubview(titleLabel)
+                contentView.addSubview(titleLabel!)
                 contentView.addSubview(valueLabel!)
             }
             contentView.addSubview(slider)
@@ -92,10 +88,9 @@ open class SliderCell: Cell<Float>, CellType {
 
     open override func update() {
         super.update()
-        titleLabel.text = row.title
         valueLabel.text = row.displayValueFor?(row.value)
         valueLabel.isHidden = !shouldShowTitle && !awakeFromNibCalled
-        titleLabel.isHidden = valueLabel.isHidden
+        titleLabel?.isHidden = valueLabel.isHidden
         slider.value = row.value ?? 0.0
         slider.isEnabled = !row.isDisabled
     }
@@ -103,7 +98,7 @@ open class SliderCell: Cell<Float>, CellType {
     func addConstraints() {
         guard !awakeFromNibCalled else { return }
 
-        let views: [String : Any] = ["titleLabel": titleLabel, "valueLabel": valueLabel, "slider": slider]
+        let views: [String : Any] = ["titleLabel": titleLabel!, "valueLabel": valueLabel, "slider": slider]
         let metrics = ["vPadding": 12.0, "spacing": 12.0]
         if shouldShowTitle {
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-[valueLabel]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))

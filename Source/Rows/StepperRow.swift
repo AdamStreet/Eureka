@@ -58,7 +58,7 @@ open class StepperCell: Cell<Double>, CellType {
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel?.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel?.text = row.displayValueFor?(row.value)
-        detailTextLabel?.text = nil
+        subtitleLabel?.text = nil
     }
 
     @objc func valueChanged() {

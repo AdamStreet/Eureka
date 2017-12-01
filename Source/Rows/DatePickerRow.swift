@@ -62,8 +62,8 @@ open class DatePickerCell: Cell<Date>, CellType {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
         datePicker.isUserInteractionEnabled = !row.isDisabled
-        detailTextLabel?.text = nil
-        textLabel?.text = nil
+        subtitleLabel?.text = nil
+        titleLabel?.text = nil
         datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate

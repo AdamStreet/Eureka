@@ -66,7 +66,7 @@ open class DateCell: Cell<Date>, CellType {
             datePicker.minuteInterval = minuteIntervalValue
         }
         if row.isHighlighted {
-            textLabel?.textColor = tintColor
+            titleLabel?.textColor = tintColor
         }
     }
 
@@ -84,7 +84,7 @@ open class DateCell: Cell<Date>, CellType {
 
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         row.value = sender.date
-        detailTextLabel?.text = row.displayValueFor?(row.value)
+        subtitleLabel?.text = row.displayValueFor?(row.value)
     }
 
     private func datePickerMode() -> UIDatePickerMode {

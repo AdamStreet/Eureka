@@ -64,8 +64,8 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
 
     open override func update() {
         super.update()
-        textLabel?.text = nil
-        detailTextLabel?.text = nil
+        titleLabel?.text = nil
+        subtitleLabel?.text = nil
         picker.reloadAllComponents()
         if let selectedValue = pickerRow?.value, let index = pickerRow?.options.index(of: selectedValue) {
             picker.selectRow(index, inComponent: 0, animated: true)

@@ -55,7 +55,7 @@ open class BaseRow: BaseRowType {
     public var isValid: Bool { return validationErrors.isEmpty }
     public var isHighlighted: Bool = false
 
-    /// The title will be displayed in the textLabel of the row.
+    /// The title will be displayed in the titleLabel of the row.
     public var title: String?
 
     /// Parameter used when creating the cell for this row.

@@ -171,8 +171,8 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
 
     open override func update() {
         super.update()
-        textLabel?.text = nil
-        detailTextLabel?.text = nil
+        titleLabel?.text = nil
+        subtitleLabel?.text = nil
         floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         floatLabelTextField.text =  row.displayValueFor?(row.value)
         floatLabelTextField.isEnabled = !row.isDisabled

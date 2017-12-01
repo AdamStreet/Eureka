@@ -140,7 +140,7 @@ class RowsExampleViewController: FormViewController {
         super.viewDidLoad()
         
         URLRow.defaultCellUpdate = { cell, row in cell.textField.textColor = .blue }
-        LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orange  }
+        LabelRow.defaultCellUpdate = { cell, row in cell.subtitleLabel?.textColor = .orange  }
         CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orange }
         DateRow.defaultRowInitializer = { row in row.minimumDate = Date() }
 
@@ -514,7 +514,7 @@ class FieldRowCustomizationController : FormViewController {
                     cell.textField.placeholder = "Name (right alignment)"
                 }
         
-            +++ Section(header: "Customized Text field width", footer: "Eureka allows us to set up a specific UITextField width using textFieldPercentage property. In the section above we have also right aligned the textLabels.")
+            +++ Section(header: "Customized Text field width", footer: "Eureka allows us to set up a specific UITextField width using textFieldPercentage property. In the section above we have also right aligned the titleLabels.")
             
                 <<< NameRow() {
                     $0.title = "Title"
@@ -523,7 +523,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 .cellUpdate {
                     $1.cell.textField.textAlignment = .left
-                    $1.cell.textLabel?.textAlignment = .right
+                    $1.cell.titleLabel?.textAlignment = .right
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
@@ -532,7 +532,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 .cellUpdate {
                     $1.cell.textField.textAlignment = .left
-                    $1.cell.textLabel?.textAlignment = .right
+                    $1.cell.titleLabel?.textAlignment = .right
                 }
                 <<< NameRow() {
                     $0.title = "One more"
@@ -541,7 +541,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 .cellUpdate {
                     $1.cell.textField.textAlignment = .left
-                    $1.cell.textLabel?.textAlignment = .right
+                    $1.cell.titleLabel?.textAlignment = .right
                 }
         
             +++ Section("TextAreaRow")
@@ -717,11 +717,11 @@ class NativeEventFormViewController : FormViewController {
                             cell.datePicker.datePickerMode = .dateAndTime
                         }
                     }
-                    let color = cell.detailTextLabel?.textColor
+                    let color = cell.subtitleLabel?.textColor
                     row.onCollapseInlineRow { cell, _, _ in
-                        cell.detailTextLabel?.textColor = color
+                        cell.subtitleLabel?.textColor = color
                     }
-                    cell.detailTextLabel?.textColor = cell.tintColor
+                    cell.subtitleLabel?.textColor = cell.tintColor
                 }
             
             <<< DateTimeInlineRow("Ends"){
@@ -748,11 +748,11 @@ class NativeEventFormViewController : FormViewController {
                             cell.datePicker.datePickerMode = .dateAndTime
                         }
                     }
-                    let color = cell.detailTextLabel?.textColor
+                    let color = cell.subtitleLabel?.textColor
                     row.onCollapseInlineRow { cell, _, _ in
-                        cell.detailTextLabel?.textColor = color
+                        cell.subtitleLabel?.textColor = color
                     }
-                    cell.detailTextLabel?.textColor = cell.tintColor
+                    cell.subtitleLabel?.textColor = cell.tintColor
                 }
         
         form +++
@@ -862,7 +862,7 @@ class HiddenRowsExample : FormViewController {
         super.viewDidLoad()
         
         TextRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.italicSystemFont(ofSize: 12)
+            cell.titleLabel?.font = UIFont.italicSystemFont(ofSize: 12)
         }
         
         form = Section("What do you want to talk about:")
@@ -1199,9 +1199,9 @@ class ValidationsController: FormViewController {
         
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
-            cell.textLabel?.textColor = .white
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-            cell.textLabel?.textAlignment = .right
+            cell.titleLabel?.textColor = .white
+            cell.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+            cell.titleLabel?.textAlignment = .right
             
         }
         
@@ -1539,7 +1539,7 @@ class MultivaluedController: FormViewController {
                     return ButtonRow(){
                         $0.title = "Add New Tag"
                     }.cellUpdate { cell, row in
-                        cell.textLabel?.textAlignment = .left
+                        cell.titleLabel?.textAlignment = .left
                     }
                 }
                 $0.multivaluedRowToInsertAt = { index in
@@ -1674,7 +1674,7 @@ class MultivaluedOnlyInsertController: FormViewController {
                     sec.addButtonProvider = { _ in return ButtonRow {
                                                             $0.title = "Add Tag"
                                                           }.cellUpdate { cell, row in
-                                                                cell.textLabel?.textAlignment = .left
+                                                                cell.titleLabel?.textAlignment = .left
                                                           }
                     }
                     sec.multivaluedRowToInsertAt = { index in

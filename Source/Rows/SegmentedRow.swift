@@ -29,7 +29,6 @@ import Foundation
 open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     @IBOutlet public weak var segmentedControl: UISegmentedControl!
-    @IBOutlet public weak var titleLabel: UILabel?
 
     private var dynamicConstraints = [NSLayoutConstraint]()
     fileprivate var observingTitleText = false
@@ -42,8 +41,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.setContentHuggingPriority(UILayoutPriority(250), for: .horizontal)
         self.segmentedControl = segmentedControl
-
-        self.titleLabel = self.textLabel
+        
         self.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
 
@@ -61,7 +59,6 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
-            self?.titleLabel = self?.textLabel
             self?.setNeedsUpdateConstraints()
         }
         contentView.addSubview(titleLabel!)
@@ -105,7 +102,6 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     open override func update() {
         super.update()
-        detailTextLabel?.text = nil
 
         updateSegmentedControl()
         segmentedControl.selectedSegmentIndex = selectedIndex() ?? UISegmentedControlNoSegment

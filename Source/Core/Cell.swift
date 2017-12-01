@@ -92,8 +92,10 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     /// The row associated to this cell
     public weak var row: RowOf<T>!
 
+    private var awakeFromNibCalled = false
+    
     @IBOutlet public weak var titleLabel : UILabel?
-    @IBOutlet public weak var selectedItemLabel : UILabel?
+    @IBOutlet public weak var subtitleLabel : UILabel?
     
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
@@ -105,8 +107,9 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        awakeFromNibCalled = true
     }
-
+    
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -114,9 +117,19 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
         self.titleLabel = titleLabel
         contentView.addSubview(titleLabel)
         
-        let selectedItemLabel = UILabel()
-        self.selectedItemLabel = selectedItemLabel
-        contentView.addSubview(selectedItemLabel)
+        let subtitleLabel = UILabel()
+        self.subtitleLabel = subtitleLabel
+        contentView.addSubview(subtitleLabel)
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
+            guard let me = self else { return }
+            me.update()
+        }
+    }
+    
+    deinit {
+        guard !awakeFromNibCalled else { return }
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
     /**
@@ -134,52 +147,57 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     open override func setup() {
         super.setup()
         
-        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        selectedItemLabel?.translatesAutoresizingMaskIntoConstraints = false
-        
-        let horizontalGap : CGFloat = 10.0
-        let verticalGap : CGFloat = 6.0
-        
-        if let titleLabel = titleLabel {
-            contentView.addConstraint(NSLayoutConstraint(item: titleLabel,
-                                                         attribute: .leading,
-                                                         relatedBy: .equal,
-                                                         toItem: contentView,
-                                                         attribute: .leading,
-                                                         multiplier: 1.0,
-                                                         constant: horizontalGap))
+        if (!awakeFromNibCalled) {
+            // Use default cell layout
+            titleLabel?.translatesAutoresizingMaskIntoConstraints = false
+            subtitleLabel?.translatesAutoresizingMaskIntoConstraints = false
             
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(gap)-[titleLabel]-(gap)-|",
-                                                                      options: .alignAllCenterY,
-                                                                      metrics: ["gap" : verticalGap],
-                                                                      views: ["titleLabel" : titleLabel]))
-        }
-        
-        if let selectedItemLabel = selectedItemLabel {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(gap)-[selectedItemLabel]-(gap)-|",
-                                                                      options: .alignAllCenterY,
-                                                                      metrics: ["gap" : verticalGap],
-                                                                      views: ["selectedItemLabel" : selectedItemLabel]))
+            titleLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+            titleLabel?.setContentCompressionResistancePriority(.required, for: .horizontal)
             
-            contentView.addConstraint(NSLayoutConstraint(item: selectedItemLabel,
-                                                         attribute: .trailing,
-                                                         relatedBy: .equal,
-                                                         toItem: contentView,
-                                                         attribute: .trailing,
-                                                         multiplier: 1.0,
-                                                         constant: -horizontalGap))
+            let horizontalGap : CGFloat = 10.0
+            let verticalGap : CGFloat = 6.0
+            
+            if let titleLabel = titleLabel {
+                contentView.addConstraint(NSLayoutConstraint(item: titleLabel,
+                                                             attribute: .leading,
+                                                             relatedBy: .equal,
+                                                             toItem: contentView,
+                                                             attribute: .leading,
+                                                             multiplier: 1.0,
+                                                             constant: horizontalGap))
+                
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(gap)-[titleLabel]-(gap)-|",
+                                                                          options: .alignAllCenterY,
+                                                                          metrics: ["gap" : verticalGap],
+                                                                          views: ["titleLabel" : titleLabel]))
+            }
+            
+            if let selectedItemLabel = subtitleLabel {
+                contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(gap)-[selectedItemLabel]-(gap)-|",
+                                                                          options: .alignAllCenterY,
+                                                                          metrics: ["gap" : verticalGap],
+                                                                          views: ["selectedItemLabel" : selectedItemLabel]))
+                
+                contentView.addConstraint(NSLayoutConstraint(item: selectedItemLabel,
+                                                             attribute: .trailing,
+                                                             relatedBy: .equal,
+                                                             toItem: contentView,
+                                                             attribute: .trailing,
+                                                             multiplier: 1.0,
+                                                             constant: -horizontalGap))
+            }
+            
+            if let titleLabel = titleLabel, let selectedItemLabel = subtitleLabel {
+                contentView.addConstraint(NSLayoutConstraint(item: titleLabel,
+                                                             attribute: .trailing,
+                                                             relatedBy: .lessThanOrEqual,
+                                                             toItem: selectedItemLabel,
+                                                             attribute: .leading,
+                                                             multiplier: 1.0,
+                                                             constant: horizontalGap))
+            }
         }
-        
-        if let titleLabel = titleLabel, let selectedItemLabel = selectedItemLabel {
-            contentView.addConstraint(NSLayoutConstraint(item: titleLabel,
-                                                         attribute: .trailing,
-                                                         relatedBy: .lessThanOrEqual,
-                                                         toItem: selectedItemLabel,
-                                                         attribute: .leading,
-                                                         multiplier: 1.0,
-                                                         constant: horizontalGap))
-        }
-        
     }
 
     /**
@@ -194,7 +212,7 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
         textLabel?.text = nil
         detailTextLabel?.text = nil
         
-        update(textLabel: titleLabel, detailTextLabel: selectedItemLabel)
+        update(textLabel: titleLabel, detailTextLabel: subtitleLabel)
     }
 
     /**

@@ -108,11 +108,11 @@ public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
-            let color = cell.detailTextLabel?.textColor
+            let color = cell.subtitleLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
-                cell.detailTextLabel?.textColor = color
+                cell.subtitleLabel?.textColor = color
             }
-            cell.detailTextLabel?.textColor = cell.tintColor
+            cell.subtitleLabel?.textColor = cell.tintColor
         }
     }
 
@@ -131,11 +131,11 @@ public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRow
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
-            let color = cell.detailTextLabel?.textColor
+            let color = cell.subtitleLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
-                cell.detailTextLabel?.textColor = color
+                cell.subtitleLabel?.textColor = color
             }
-            cell.detailTextLabel?.textColor = cell.tintColor
+            cell.subtitleLabel?.textColor = cell.tintColor
         }
     }
 
@@ -154,11 +154,11 @@ public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
-            let color = cell.detailTextLabel?.textColor
+            let color = cell.subtitleLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
-                cell.detailTextLabel?.textColor = color
+                cell.subtitleLabel?.textColor = color
             }
-            cell.detailTextLabel?.textColor = cell.tintColor
+            cell.subtitleLabel?.textColor = cell.tintColor
         }
     }
 
@@ -177,11 +177,11 @@ public final class CountDownInlineRow_<T>: _CountDownInlineRow, RowType, InlineR
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
-            let color = cell.detailTextLabel?.textColor
+            let color = cell.subtitleLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
-                cell.detailTextLabel?.textColor = color
+                cell.subtitleLabel?.textColor = color
             }
-            cell.detailTextLabel?.textColor = cell.tintColor
+            cell.subtitleLabel?.textColor = cell.tintColor
         }
     }
 
