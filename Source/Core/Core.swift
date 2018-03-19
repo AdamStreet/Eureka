@@ -809,10 +809,6 @@ extension FormViewController : UITableViewDelegate {
                 tableView.endEditing(true)
             }
             section.remove(at: indexPath.row)
-            DispatchQueue.main.async {
-                tableView.isEditing = !tableView.isEditing
-                tableView.isEditing = !tableView.isEditing
-            }
         } else if editingStyle == .insert {
             guard var section = form[indexPath.section] as? MultivaluedSection else { return }
             guard let multivaluedRowToInsertAt = section.multivaluedRowToInsertAt else {
@@ -820,10 +816,6 @@ extension FormViewController : UITableViewDelegate {
             }
             let newRow = multivaluedRowToInsertAt(max(0, section.count - 1))
             section.insert(newRow, at: section.count - 1)
-            DispatchQueue.main.async {
-                tableView.isEditing = !tableView.isEditing
-                tableView.isEditing = !tableView.isEditing
-            }
             tableView.scrollToRow(at: IndexPath(row: section.count - 1, section: indexPath.section), at: .bottom, animated: true)
             if newRow.baseCell.cellCanBecomeFirstResponder() {
                 newRow.baseCell.cellBecomeFirstResponder()
